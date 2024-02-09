@@ -1,0 +1,12 @@
+<table class="table">
+  <tr class="ligne" *ngFor="let block of blocks, let y = index">
+    <th class="colonne"
+    *ngFor="let case of block, let x = index"
+    [style.backgroundColor]=" Painter(case)"
+    (mouseover)="onMouseEnter(x,y)"
+    (mouseleave)="onMouseOut(x,y)"
+    (click)="onMouseClick(x,y)"
+    #hoverName>
+  </th>
+  </tr>
+</table>

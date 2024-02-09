@@ -1,0 +1,34 @@
+td, th {
+  border: 1px solid #ffffff;
+  text-align: left;
+  padding: 2px;
+  height: 12px;
+  width: 12px;
+  color: white;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  padding: 20px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul, li, .table{
+  display: inline;
+}
+
+.selected{
+  justify-content: center;
+  align-items: center;
+}
+
+.selectedDiv{
+  height: 80px;
+}
+
+.selectedList{
+  justify-content: center;
+}

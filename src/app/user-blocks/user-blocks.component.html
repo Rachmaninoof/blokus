@@ -1,0 +1,40 @@
+<div class="selectedDiv">
+<ul class="selectedList">
+
+  <li class="selectedList"><button (click)="rotate()">rotate</button></li>
+  <li class="selectedList"><button (click)="mirror()">mirror</button></li>
+
+  <li class="selectedList">
+    <table class="selected">
+
+    <tr *ngFor="let row of selectedBlock">
+      <th *ngFor="let case of row" [style.backgroundColor]="Painter(case)">
+
+      </th>
+    </tr>
+    </table>
+  </li>
+
+
+
+</ul>
+
+
+</div>
+<br>
+
+<ul id="menu">
+<li *ngFor="let block of blocks">
+
+    <table class="table">
+    <tr *ngFor="let row of block">
+      <th *ngFor="let case of row" [style.backgroundColor]="Painter(case)" (click)="select(block)">
+
+      </th>
+    </tr>
+    </table>
+
+</li>
+</ul>
+
+
