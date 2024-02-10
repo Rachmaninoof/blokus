@@ -52,18 +52,10 @@ select(clickedBlock:number[][]){
   this.blockService.updateSelected(copyClickedBlock);
 }
 
-async ngOnInit(){
-  let value = await this.databaseService.getBoard();
-  console.log(value);
-  await this.databaseService.updateBoard(this.blockService.gameObject)
-}
-
 constructor(public blockService:BlockServiceService, private databaseService:DatabaseService){
 
   this.selectedBlock = [[0]];
   this.blockService.selected.subscribe(value => this.selectedBlock = value);
-
-
 
   this.blocks=[
     [[1,1,1,1],

@@ -18,6 +18,10 @@ export class GridComponent {
 
   }
 
+  ngOnInit(){
+    this.blockService.getBlocks();
+  }
+
   Painter(blockstate:number) {
     switch(blockstate){
       case 1:
@@ -40,20 +44,28 @@ export class GridComponent {
   onMouseClick(x:number,y:number){
     let height = this.selectedBlock.length
     let width = this.selectedBlock[0].length
+
+    //Checks if the block can be placed
     for(let i = 0; i < height; i++){
       for(let k = 0; k < width; k++){
-        if(this.blocks[y+i][x+k] == 0 || y+i<14 || x+k<14){
+        if(this.blocks[y+i][x+k] != 0 || y+i>13 || x+k>13){
+          if(this.selectedBlock[i][k] == 0){
 
-        }
-        else{
-          console.log("error! invalid placement")
-          break
+          }
+          else{
+            console.log(this.blocks[y+i][x+k], y+i, x+k)
+            throw new Error("Invalid placement");
+          }
         }
       }
     }
+
+    //Places the block
     for(let i = 0; i < height; i++){
       for(let k = 0; k < width; k++){
-        this.blocks[y+i][x+k] = this.selectedBlock[i][k];
+        if(this.blocks[y+i][x+k] == 0){
+          this.blocks[y+i][x+k] = this.selectedBlock[i][k];
+        }
       }
     }
     this.blockService.updateGrid(this.blocks);

@@ -10,12 +10,10 @@ import { BlockServiceService } from '../block-service.service';
 export class ResetButtonComponent {
 
   constructor(private databaseService:DatabaseService, private blockService:BlockServiceService){
-
   }
 
-
   reset(){
-    this.databaseService.updateBoard(this.blockService.gameObject)
+    this.blockService.updateGrid(this.blockService.generateEmptyBoard());
   }
 
 }

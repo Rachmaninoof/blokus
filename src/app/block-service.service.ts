@@ -1,55 +1,34 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { GameObject } from './game-object';
+import { DatabaseService } from './database.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BlockServiceService {
 
-  blocks:number[][];
-  i:number = 0;
-  k:number = 0;
+  blocks:any | null;
   rawData:any;
   blocklist:any;
   selected:BehaviorSubject<number[][]>;
   grid:BehaviorSubject<number[][]>;
   possibleBlocks:BehaviorSubject<number[]>;
-  gameObject:GameObject;
 
-  constructor() {
-
+  constructor(private databaseService:DatabaseService) {
 
     this.selected = new BehaviorSubject([[0]]);
     this.possibleBlocks = new BehaviorSubject([25]);
 
-    this.i = 0;
-    this.k = 0;
-    this.blocks = [];
-    while(this.i<14){
-      this.blocks.push([]);
-      while(this.k<14){
-        this.blocks[this.i][this.k] = 0;
-        this.k++;
-      }
-      this.i++;
-      this.k = 0;
-    }
+    this.blocks = this.generateEmptyBoard()
 
     this.grid = new BehaviorSubject(this.blocks);
 
-    this.gameObject = {
-      board:this.blocks,
-      player1:null,
-      player2:null,
-      block_played_1:[],
-      block_played_2:[]
-    };
-
   }
 
-  getBlocks(){
-    return this.blocks;
+  async getBlocks(){
+    let board = await this.databaseService.getBoard();
+    this.blocks = board![0].board;
+    this.grid.next(this.blocks)
   }
 
   getPossibleBlocks(){
@@ -61,10 +40,27 @@ export class BlockServiceService {
   }
 
   updateGrid(value:number[][]){
+    this.databaseService.updateBoard(value);
     this.grid.next(value);
   }
 
   updatePossibleBlocks(index:number){
 
+  }
+
+  generateEmptyBoard(){
+    let i = 0;
+    let k = 0;
+    let blocks:number[][] = [];
+    while(i<14){
+      blocks.push([]);
+      while(k<14){
+        blocks[i][k] = 0;
+        k++;
+      }
+      i++;
+      k = 0;
+    }
+    return blocks
   }
 }
