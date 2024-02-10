@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { GridComponent } from './grid/grid.component';
 import { UserBlocksComponent } from './user-blocks/user-blocks.component';
 import { ResetButtonComponent } from './reset-button/reset-button.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { ResetButtonComponent } from './reset-button/reset-button.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

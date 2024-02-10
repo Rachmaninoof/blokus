@@ -13,6 +13,7 @@ export class BlockServiceService {
   selected:BehaviorSubject<number[][]>;
   grid:BehaviorSubject<number[][]>;
   possibleBlocks:BehaviorSubject<number[]>;
+  playernumber:BehaviorSubject<number>;
 
   constructor(private databaseService:DatabaseService) {
 
@@ -23,6 +24,7 @@ export class BlockServiceService {
 
     this.grid = new BehaviorSubject(this.blocks);
 
+    this.playernumber = new BehaviorSubject(0);
   }
 
   async getBlocks(){

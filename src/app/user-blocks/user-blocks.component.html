@@ -28,7 +28,7 @@
 
     <table class="table">
     <tr *ngFor="let row of block">
-      <th *ngFor="let case of row" [style.backgroundColor]="Painter(case)" (click)="select(block)">
+      <th *ngFor="let case of row; let i = index" [style.backgroundColor]="Painter(case)" (click)="select(block, i)">
 
       </th>
     </tr>

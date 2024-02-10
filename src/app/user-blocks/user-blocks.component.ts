@@ -11,15 +11,18 @@ import { DatabaseService } from '../database.service';
 export class UserBlocksComponent {
 blocks:any[]
 selectedBlock:number[][];
+playernumber:number;
 
 Painter(blockstate:number) {
-  switch(blockstate){
-    case 1:
-      return 'Lightblue';
-    case 2:
-      return 'pink';
-    default:
-      return 'white'
+  if(blockstate != 0){
+    switch(this.playernumber){
+      case 1:{return 'Lightblue'}
+      case 2:{return 'pink'}
+      default:{return 'white'}
+    }
+  }
+  else{
+    return 'white'
   }
 }
 
@@ -47,7 +50,7 @@ mirror(){
   this.blockService.updateSelected(mirroredBlock)
 }
 
-select(clickedBlock:number[][]){
+select(clickedBlock:number[][], i:number){
   const copyClickedBlock: any[] = JSON.parse(JSON.stringify(clickedBlock)) as typeof clickedBlock;
   this.blockService.updateSelected(copyClickedBlock);
 }
@@ -56,6 +59,9 @@ constructor(public blockService:BlockServiceService, private databaseService:Dat
 
   this.selectedBlock = [[0]];
   this.blockService.selected.subscribe(value => this.selectedBlock = value);
+
+  this.playernumber = 0
+  this.blockService.playernumber.subscribe(value => this.playernumber = value)
 
   this.blocks=[
     [[1,1,1,1],

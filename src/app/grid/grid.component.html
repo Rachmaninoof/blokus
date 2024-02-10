@@ -3,10 +3,15 @@
     <th class="colonne"
     *ngFor="let case of block, let x = index"
     [style.backgroundColor]=" Painter(case)"
-    (mouseover)="onMouseEnter(x,y)"
-    (mouseleave)="onMouseOut(x,y)"
+    (mouseenter)="onMouseEnter(x,y)"
+    (mouseout)="onMouseOut(x,y)"
     (click)="onMouseClick(x,y)"
-    #hoverName>
+    #hoverName
+    [class.test]="test(x,y)"
+    >
   </th>
   </tr>
 </table>
+<div *ngIf="placementError">
+  <p>{{placementError}}</p>
+</div>
