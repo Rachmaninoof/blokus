@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SupabaseClient, createClient } from '@supabase/supabase-js'
+import { BlockList } from 'net';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -87,20 +88,35 @@ export class DatabaseService {
     return {blockIndexes,error};
   }
 
-  async updatePlayer1Blocks(indexList:number[]){
+  async updatePlayer1Blocks(indexList:boolean[]){
     const { error } = await this.supabase
-    .from('Game')
+    .from('board')
     .update({ player1_blocks: indexList})
     .eq('id', 1)
     return error
   }
 
-  async updatePlayer2Blocks(indexList:number[]){
+  async updatePlayer2Blocks(indexList:boolean[]){
     const { error } = await this.supabase
-    .from('Game')
+    .from('board')
     .update({ player2_blocks: indexList})
     .eq('id', 1)
     return error
+  }
+
+  async updateTurns(int:number){
+    const { error } = await this.supabase
+    .from('board')
+    .update({ turns: int})
+    .eq('id', 1)
+    return error
+  }
+
+  async getTurns(){
+    let { data: turns, error } = await this.supabase
+    .from('board')
+    .select('turns');
+    return {turns,error};
   }
 
 }

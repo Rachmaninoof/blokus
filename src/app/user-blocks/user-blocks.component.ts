@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { BlockServiceService } from '../block-service.service';
 import { DatabaseService } from '../database.service';
+import { AppComponent } from '../app.component';
 
 
 @Component({
@@ -12,6 +13,8 @@ export class UserBlocksComponent {
 blocks:any[]
 selectedBlock:number[][];
 playernumber:number;
+blockIndexes:boolean[];
+possibleBlocks:number[][][];
 
 Painter(blockstate:number) {
   if(blockstate != 0){
@@ -50,18 +53,24 @@ mirror(){
   this.blockService.updateSelected(mirroredBlock)
 }
 
-select(clickedBlock:number[][], i:number){
+async select(clickedBlock:number[][], i:number){
   const copyClickedBlock: any[] = JSON.parse(JSON.stringify(clickedBlock)) as typeof clickedBlock;
   this.blockService.updateSelected(copyClickedBlock);
+  this.blockService.selectedIndex.next(i)
 }
 
-constructor(public blockService:BlockServiceService, private databaseService:DatabaseService){
+constructor(public blockService:BlockServiceService, private databaseService:DatabaseService, private appComponent:AppComponent){
 
   this.selectedBlock = [[0]];
   this.blockService.selected.subscribe(value => this.selectedBlock = value);
 
   this.playernumber = 0
   this.blockService.playernumber.subscribe(value => this.playernumber = value)
+
+  this.blockIndexes = []
+  this.blockService.indexes.subscribe((value) => {this.blockIndexes = value;})
+  this.appComponent.indexes.subscribe(value => this.blockIndexes = value)
+  console.log(this.blockIndexes)
 
   this.blocks=[
     [[1,1,1,1],
@@ -153,5 +162,9 @@ constructor(public blockService:BlockServiceService, private databaseService:Dat
     [1],
     [1],
     [1]]]
+
+  this.possibleBlocks = [[[]]]
+  this.blockService.possibleBlocks.subscribe(value => this.possibleBlocks = value)
+  this.blockService.possibleBlocks.next(this.blocks)
 }
 }

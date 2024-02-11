@@ -24,11 +24,11 @@
 <br>
 
 <ul id="menu">
-<li *ngFor="let block of blocks">
+<li *ngFor="let block of this.possibleBlocks; let i = index" >
 
-    <table class="table">
+    <table class="table" *ngIf="this.blockIndexes[i]">
     <tr *ngFor="let row of block">
-      <th *ngFor="let case of row; let i = index" [style.backgroundColor]="Painter(case)" (click)="select(block, i)">
+      <th *ngFor="let case of row" [style.backgroundColor]="Painter(case)" (click)="select(block, i)">
 
       </th>
     </tr>

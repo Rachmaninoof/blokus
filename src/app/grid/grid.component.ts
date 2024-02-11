@@ -15,6 +15,7 @@ export class GridComponent {
   playernumber:number;
   hoveredTiles:number[][];
   placementError:string|null;
+  i:number;
 
   constructor(private blockService:BlockServiceService, private databaseService:DatabaseService){
 
@@ -30,6 +31,9 @@ export class GridComponent {
     this.hoveredTiles = this.blockService.generateEmptyBoard();
 
     this.placementError = null;
+
+    this.i = -1;
+    this.blockService.selectedIndex.subscribe(value => this.i = value)
 
   }
 
@@ -56,7 +60,7 @@ export class GridComponent {
       for(let i = 0; i < height; i++){
         for(let k = 0; k < width; k++){
           if(this.hoveredTiles[y+i][x+k] == 0){
-            this.hoveredTiles[y+i][x+k] = this.selectedBlock[i][k];
+            this.hoveredTiles[y+i][x+k] = this.selectedBlock[i][k]*this.playernumber;
           }
         }
       }
@@ -82,7 +86,7 @@ export class GridComponent {
     }
   }
 
-  test(x:number,y:number){
+  changeCSSClass(x:number,y:number){
     if(this.hoveredTiles[y][x] == this.playernumber){
       return true
     }
@@ -91,7 +95,7 @@ export class GridComponent {
     }
   }
 
-  onMouseClick(x:number,y:number){
+  async onMouseClick(x:number,y:number){
     let height = this.selectedBlock.length
     let width = this.selectedBlock[0].length
 
@@ -124,5 +128,29 @@ export class GridComponent {
     this.placementError = null
     this.databaseService.updateBoard(this.blocks)
     this.blockService.updateSelected([])
+
+    //removes block index from possible block list
+    switch(this.playernumber){
+      case 1:{
+        let indexObject = await this.databaseService.getPlayer1Blocks();
+        let Indexes = indexObject.blockIndexes![0].player1_blocks;
+        Indexes[this.i] = false
+        console.log(this.i)
+        console.log(Indexes)
+        let error = await this.databaseService.updatePlayer1Blocks(Indexes);
+        break;
+      }
+      case 2:{
+        let indexObject = await this.databaseService.getPlayer2Blocks();
+        let Indexes = indexObject.blockIndexes![0].player2_blocks;
+        Indexes[this.i] = false
+        await this.databaseService.updatePlayer2Blocks(Indexes);
+        break;
+      }
+      default:{}
+    }
+
+    //add turn
+    this.blockService.addTurn()
   }
 }

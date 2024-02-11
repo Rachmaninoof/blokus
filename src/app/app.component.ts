@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DatabaseService } from './database.service';
-import { interval } from 'rxjs';
+import { BehaviorSubject, interval } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { BlockServiceService } from './block-service.service';
 
@@ -11,10 +11,12 @@ import { BlockServiceService } from './block-service.service';
 })
 export class AppComponent {
   title = 'blokus (Laura edition)';
-  tabWasClosed:boolean;
+  playernumber:number;
+  indexes:BehaviorSubject<boolean[]>;
 
   constructor(private databaseService:DatabaseService, private blockService:BlockServiceService){
-    this.tabWasClosed = false;
+    this.playernumber = 0;
+    this.indexes = new BehaviorSubject([true,false])
   }
 
   async ngOnInit(){
@@ -30,7 +32,8 @@ export class AppComponent {
       }
 
       else{
-        this.blockService.playernumber.next(2);
+        this.playernumber = 2
+        this.blockService.playernumber.next(this.playernumber);
 
         interval(500)
         .pipe(takeWhile(() => true))
@@ -41,13 +44,33 @@ export class AppComponent {
 
     }
     else{
-      this.blockService.playernumber.next(1);
+      this.playernumber = 1
+      this.blockService.playernumber.next(this.playernumber);
 
       interval(500)
       .pipe(takeWhile(() => true))
       .subscribe(async () => {
       await this.databaseService.updatePlayer1(Date.now())
       });
+    }
+
+    switch(this.playernumber){
+      case 1:{
+        let blocksIndexes = (await this.databaseService.getPlayer1Blocks()).blockIndexes![0].player1_blocks
+        console.log(blocksIndexes)
+        this.blockService.indexes.next(blocksIndexes)
+        this.databaseService.realtime.subscribe(value => this.indexes.next(value.new.player1_blocks))
+        break;
+      }
+      case 2:{
+        let blocksIndexes = (await this.databaseService.getPlayer2Blocks()).blockIndexes![0].player2_blocks
+        this.blockService.indexes.next(blocksIndexes)
+        this.databaseService.realtime.subscribe(value => this.indexes.next(value.new.player2_blocks))
+        break;
+      }
+    default:{
+        throw new Error("The game is full")
+      }
     }
   }
 

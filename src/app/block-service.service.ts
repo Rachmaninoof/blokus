@@ -11,26 +11,41 @@ export class BlockServiceService {
   rawData:any;
   blocklist:any;
   selected:BehaviorSubject<number[][]>;
+  selectedIndex:BehaviorSubject<number>;
   grid:BehaviorSubject<number[][]>;
-  possibleBlocks:BehaviorSubject<number[]>;
+  possibleBlocks:BehaviorSubject<number[][][]>;
   playernumber:BehaviorSubject<number>;
+  indexes:BehaviorSubject<boolean[]>;
 
   constructor(private databaseService:DatabaseService) {
 
     this.selected = new BehaviorSubject([[0]]);
-    this.possibleBlocks = new BehaviorSubject([25]);
+    this.possibleBlocks = new BehaviorSubject([[[25]]]);
 
     this.blocks = this.generateEmptyBoard()
 
     this.grid = new BehaviorSubject(this.blocks);
 
     this.playernumber = new BehaviorSubject(0);
+
+    this.selectedIndex = new BehaviorSubject(-1);
+
+    this.indexes = new BehaviorSubject([true, false])
   }
 
   async getBlocks(){
     let board = await this.databaseService.getBoard();
     this.blocks = board![0].board;
     this.grid.next(this.blocks)
+  }
+
+  async reinitializePossibleBlocks(){
+    let full = []
+    for(let i = 0; i<21; i++){
+      full.push(true)
+    }
+    await this.databaseService.updatePlayer1Blocks(full);
+    await this.databaseService.updatePlayer2Blocks(full);
   }
 
   getPossibleBlocks(){
@@ -64,5 +79,15 @@ export class BlockServiceService {
       k = 0;
     }
     return blocks
+  }
+
+  reinitializeTurns(){
+    this.databaseService.updateTurns(0)
+  }
+
+  async addTurn(){
+    let turns = (await this.databaseService.getTurns()).turns![0].turns
+    turns += 1
+    await this.databaseService.updateTurns(turns);
   }
 }

@@ -18,6 +18,8 @@ export class ResetButtonComponent {
 
   reset(){
     this.blockService.updateGrid(this.blockService.generateEmptyBoard());
+    this.blockService.reinitializePossibleBlocks()
+    this.blockService.reinitializeTurns()
   }
 
 }

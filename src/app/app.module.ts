@@ -7,13 +7,15 @@ import { GridComponent } from './grid/grid.component';
 import { UserBlocksComponent } from './user-blocks/user-blocks.component';
 import { ResetButtonComponent } from './reset-button/reset-button.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TurnComponent } from './turn/turn.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GridComponent,
     UserBlocksComponent,
-    ResetButtonComponent
+    ResetButtonComponent,
+    TurnComponent
   ],
   imports: [
     BrowserModule,
