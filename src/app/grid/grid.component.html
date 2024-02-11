@@ -8,6 +8,7 @@
     (click)="onMouseClick(x,y)"
     #hoverName
     [class.test]="changeCSSClass(x,y)"
+    [class.firstMove]="IsFirstMove(x,y)"
     >
   </th>
   </tr>

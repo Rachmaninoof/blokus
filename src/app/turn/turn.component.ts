@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DatabaseService } from '../database.service';
+import { BlockServiceService } from '../block-service.service';
 
 @Component({
   selector: 'app-turn',
@@ -9,10 +10,14 @@ import { DatabaseService } from '../database.service';
 export class TurnComponent {
   turn:number;
 
-constructor(private databaseService:DatabaseService){
+constructor(private databaseService:DatabaseService, private blockService:BlockServiceService){
   this.turn = 0
-  this.databaseService.realtime.subscribe(value => {this.turn = value.new.turn; this.getActivePlayer()})
+  this.blockService.numberOfTurns.subscribe(value => this.turn = value)
 
+}
+
+async ngOnInit(){
+  this.turn = (await this.databaseService.getTurns()).turns![0].turns
 }
 
 getActivePlayer(){

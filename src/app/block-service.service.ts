@@ -16,6 +16,7 @@ export class BlockServiceService {
   possibleBlocks:BehaviorSubject<number[][][]>;
   playernumber:BehaviorSubject<number>;
   indexes:BehaviorSubject<boolean[]>;
+  numberOfTurns:BehaviorSubject<number>;
 
   constructor(private databaseService:DatabaseService) {
 
@@ -31,6 +32,10 @@ export class BlockServiceService {
     this.selectedIndex = new BehaviorSubject(-1);
 
     this.indexes = new BehaviorSubject([true, false])
+
+    this.numberOfTurns = new BehaviorSubject(0);
+
+    this.databaseService.realtime.subscribe(value => this.numberOfTurns.next(value.new.turns))
   }
 
   async getBlocks(){
