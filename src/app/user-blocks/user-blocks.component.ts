@@ -10,6 +10,9 @@ import { AppComponent } from '../app.component';
   styleUrls: ['./user-blocks.component.scss']
 })
 export class UserBlocksComponent {
+
+
+
 blocks:any[]
 selectedBlock:number[][];
 playernumber:number;

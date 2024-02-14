@@ -123,13 +123,15 @@ export class GridComponent {
     //Checks if the block can be placed
     for(let i = 0; i < height; i++){
       for(let k = 0; k < width; k++){
-        if(this.blocks[y+i][x+k] != 0 && y+i>13 && x+k>13){
-          if(this.selectedBlock[i][k] == 0){
+        if(this.blocks[y+i][x+k] == 0 && y+i<14 && x+k<14){
+        }
+        else{
+          if(this.selectedBlock[i][k]==0){
           }
           else{
-            console.log(this.blocks[y+i][x+k], y+i, x+k)
-            this.placementError = "Invalid placement !"
-            throw new Error("inavlid placement !")
+            console.log(this.blocks[y+i][x+k], y+i, x+k);
+            this.placementError = "Invalid placement !";
+            throw new Error("inavlid placement !");
           }
         }
       }
