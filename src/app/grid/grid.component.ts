@@ -123,7 +123,7 @@ export class GridComponent {
     //Checks if the block can be placed
     for(let i = 0; i < height; i++){
       for(let k = 0; k < width; k++){
-        if(this.blocks[y+i][x+k] == 0 && y+i<14 && x+k<14){
+        if(this.blocks[y+i][x+k] == 0 && y+i<15 && x+k<15){
         }
         else{
           if(this.selectedBlock[i][k]==0){
@@ -165,14 +165,12 @@ export class GridComponent {
       let canPlace = false;
       for(let i = 0; i < height; i++){
         for(let k = 0; k < width; k++){
-          if(this.selectedBlock[i][k] == 1){
+          if(this.selectedBlock[i][k] == 1 && y+i-1 > -1 && y+i+1 < 14){
             for(let j = 0; j < 3; j++){
               for(let l = 0; l < 3; l++){
                 console.log(y+i+j-1,x+k+l-1)
                 if(this.blocks[y+i+j-1][x+k+l-1] == this.playernumber){
                   canPlace = true;
-                }
-                else{
                 }
               }
             }
