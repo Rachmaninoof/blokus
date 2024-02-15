@@ -8,6 +8,8 @@ import { ResetButtonComponent } from './reset-button/reset-button.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TurnComponent } from './turn/turn.component';
 
+import {MatButtonModule} from '@angular/material/button';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +20,8 @@ import { TurnComponent } from './turn/turn.component';
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

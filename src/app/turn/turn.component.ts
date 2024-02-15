@@ -9,8 +9,12 @@ import { BlockServiceService } from '../block-service.service';
 })
 export class TurnComponent {
   turn:number;
+  playerNumber:number;
 
 constructor(private databaseService:DatabaseService, private blockService:BlockServiceService){
+  this.playerNumber = 0;
+  this.blockService.playernumber.subscribe(value => this.playerNumber = value);
+
   this.turn = 0
   this.blockService.numberOfTurns.subscribe(value => this.turn = value)
 
@@ -26,6 +30,13 @@ getActivePlayer(){
   }
   else{
     return "Player 2's turn"
+  }
+}
+
+skipTurn(){
+  if(this.playerNumber%2 != this.turn%2){this.blockService.addTurn()}
+  else{
+    throw new Error("not your turn")
   }
 }
 

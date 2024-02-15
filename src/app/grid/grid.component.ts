@@ -193,11 +193,10 @@ export class GridComponent {
       let canPlace = false;
       for(let i = 0; i < height; i++){
         for(let k = 0; k < width; k++){
-          if(this.selectedBlock[i][k] == 1 && y+i-1 > -1 && y+i+1 < 14){
+          if(this.selectedBlock[i][k] == 1){
             for(let j = 0; j < 3; j++){
               for(let l = 0; l < 3; l++){
-                console.log(y+i+j-1,x+k+l-1)
-                if(this.blocks[y+i+j-1][x+k+l-1] == this.playernumber){
+                if((y+i+j-1 > -1) && (y+i+j-1 < 14) && (this.blocks[y+i+j-1][x+k+l-1] === this.playernumber)){
                   canPlace = true;
                 }
               }
@@ -205,7 +204,7 @@ export class GridComponent {
           }
         }
       }
-      if(canPlace != true){
+      if(canPlace == false){
         this.placementError = "you must touch another of your blocks"
         throw new Error("error ! invalid placement. you must touch another of your blocks")
       }
