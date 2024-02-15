@@ -13,6 +13,8 @@
   </th>
   </tr>
 </table>
-<div *ngIf="placementError">
-  <p>{{placementError}}</p>
+<div>
+  <p class="player1">Player 1 score : {{this.numberOfBlocks().player1}}</p>
+  <p *ngIf="placementError" class="error">{{placementError}}</p>
+  <p class="player2">Player 2 score : {{this.numberOfBlocks().player2}}</p>
 </div>

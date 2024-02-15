@@ -17,11 +17,15 @@ export class GridComponent {
   placementError:string|null;
   i:number;
   turn:number;
+  player1Blocks:number;
+  player2Blocks:number;
 
   constructor(private blockService:BlockServiceService, private databaseService:DatabaseService){
 
+    this.player1Blocks = 0;
+    this.player2Blocks = 0;
 
-    this.databaseService.realtime.subscribe(value => this.blocks = value.new.board)
+    this.databaseService.realtime.subscribe(value => {this.blocks = value.new.board; this.numberOfBlocks()})
     this.blockService.grid.subscribe(value => this.blocks = value);
 
     this.blockService.selected.subscribe(value => this.selectedBlock = value);
@@ -44,6 +48,7 @@ export class GridComponent {
   async ngOnInit(){
     this.turn = await (await this.databaseService.getTurns()).turns![0].turns
     this.blockService.getBlocks();
+    this.numberOfBlocks()
   }
 
   Painter(blockstate:number) {
@@ -55,6 +60,25 @@ export class GridComponent {
       default:
         return 'white';
     }
+  }
+
+  numberOfBlocks(){
+    let player1 = 0;
+    let player2 = 0;
+    for(let i = 0; i<14; i++){
+      for(let k = 0; k<14; k++){
+        switch(this.blocks[i][k]){
+          case 1:
+            player1 += 1;
+            break;
+          case 2:
+            player2 += 1;
+            break;
+          default:{}
+        }
+      }
+    }
+    return {player1, player2}
   }
 
   onMouseEnter(x:number,y:number){
@@ -111,9 +135,12 @@ export class GridComponent {
 
     //Checks if it's the user's turn
     if(this.turn%2 == 0 && this.playernumber == 2){
+      this.placementError = "Not your turn !";
       throw new Error("Not your turn !")
+
     }
     if(this.turn%2 == 1 && this.playernumber == 1){
+      this.placementError = "Not your turn !";
       throw new Error("Not your turn !")
     }
 
@@ -156,6 +183,7 @@ export class GridComponent {
 
       }
       else{
+        this.placementError = "Your first block must be on the gray square"
         throw new Error("Your first block must be on the gray square")
       }
     }
@@ -178,6 +206,7 @@ export class GridComponent {
         }
       }
       if(canPlace != true){
+        this.placementError = "you must touch another of your blocks"
         throw new Error("error ! invalid placement. you must touch another of your blocks")
       }
     }
